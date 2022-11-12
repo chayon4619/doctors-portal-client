@@ -9,7 +9,7 @@ const Contact = () => {
                     background: `url(${bgImg})`,
                     backgroundSize: 'cover'
                 }}
-                className="p-6 rounded-lg text-gray-100">
+                className="p-6 rounded-lg text-gray-900">
                 <form className="container w-full max-w-xl p-8 mx-auto space-y-6 rounded-md shadow = ng-untouched ng-pristine ng-valid">
                     <h2 className="w-full text-center text-cyan-400 text-xl font-bold leading-tight">Contact us</h2>
                     <h2 className='text-center text-white text-3xl'>Stay connected with us</h2>
