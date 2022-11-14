@@ -7,7 +7,7 @@ import { AuthContext } from '../../contexts/AuthProvider';
 const Register = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const { createUser, updateUser } = useContext(AuthContext);
+    const { createUser, updateUser, handelGoogleLogin } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('')
 
     const handelRegister = data => {
@@ -30,6 +30,15 @@ const Register = () => {
                 console.error(err)
                 setSignUPError(err.message)
             })
+    }
+
+    const googleLogin = () => {
+        handelGoogleLogin()
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(err => console.error(err))
     }
 
     return (
@@ -77,7 +86,7 @@ const Register = () => {
                 </form>
                 <p className='text-sm text-center mt-2'>Already have an account? <span className='text-cyan-500'><Link to='/login'>Log In</Link></span></p>
                 <div className="divider">OR</div>
-                <button className="btn btn-outline btn-block">CONTINUE WITH GOOGLE</button>
+                <button onClick={googleLogin} className="btn btn-outline btn-block">CONTINUE WITH GOOGLE</button>
 
             </div>
         </div>
