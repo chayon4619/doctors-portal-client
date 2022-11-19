@@ -1,14 +1,22 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+import useHooks from '../../hooks/useHooks';
 
 const Register = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { createUser, updateUser, handelGoogleLogin } = useContext(AuthContext);
-    const [signUpError, setSignUPError] = useState('')
+    const [signUpError, setSignUPError] = useState('');
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+    const [token] = useHooks(createdUserEmail)
+    const navigate = useNavigate();
+
+    if (token) {
+        navigate('/');
+    }
 
     const handelRegister = data => {
         setSignUPError('');
@@ -21,7 +29,9 @@ const Register = () => {
                     displayName: data.name
                 }
                 updateUser(userInfo)
-                    .then(() => { })
+                    .then(() => {
+                        saveUser(data.name, data.email)
+                    })
                     .catch(err => {
                         console.error(err);
                     });
@@ -31,6 +41,23 @@ const Register = () => {
                 setSignUPError(err.message)
             })
     }
+
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+        fetch('http://localhost:5000/users', {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setCreatedUserEmail(email)
+
+            })
+    };
 
     const googleLogin = () => {
         handelGoogleLogin()
